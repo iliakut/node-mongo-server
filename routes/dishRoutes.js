@@ -9,6 +9,15 @@ const dishRouter = express.Router();
 
 dishRouter.use(bodyParser.json());
 
+const verifySameUser = (authorId, commentAuthorId, next) => {
+  console.log(111, authorId, commentAuthorId, authorId.equals(commentAuthorId))
+  if (!authorId.equals(commentAuthorId)) {
+    const err = new Error('You are not the author of the comment')
+    err.code = 403;
+    next(err)
+  }
+}
+
 dishRouter
   .route('/')
   .get((req, res, next) => {
@@ -182,6 +191,8 @@ dishRouter
     Dishes.findById(req.params.dishId)
       .then(dish => {
         if (dish !== null && dish.comments.id(req.params.commentId) !== null) {
+          verifySameUser(req.user._id, dish.comments.id(req.params.commentId).author, next)
+
           if (req.body.rating) {
             dish.comments.id(req.params.commentId).rating = req.body.rating;
 
@@ -215,6 +226,7 @@ dishRouter
     Dishes.findById(req.params.dishId)
       .then(dish => {
         if (dish !== null && dish.comments.id(req.params.commentId) !== null) {
+          verifySameUser(req.user._id, dish.comments.id(req.params.commentId).author)
           dish.comments.id(req.params.commentId).remove();
           dish.save()
             .then(dish => {
