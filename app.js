@@ -29,6 +29,14 @@ connect
 
 const app = express();
 
+app.all('*', (req, res, next) => {
+  if (req.secure) {
+    return next();
+  } else {
+    res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url)
+  }
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,3 +55,5 @@ app.use('/leaders', leaderRouter);
 var listener = app.listen(3000, function () {
   console.log('Listening on port ' + listener.address().port)
 })
+
+module.exports = app;
