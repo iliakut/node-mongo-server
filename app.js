@@ -13,6 +13,7 @@ const usersRouter = require('./routes/users');
 const dishRoutes = require('./routes/dishRoutes');
 const promoRouter = require('./routes/promoRouter');
 const leaderRouter = require('./routes/leaderRouter');
+const uploadRouter = require('./routes/uploadRouter');
 
 const mongoose = require('mongoose');
 
@@ -37,6 +38,7 @@ app.all('*', (req, res, next) => {
   }
 });
 
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -51,6 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dishes', dishRoutes);
 app.use('/promotions', promoRouter);
 app.use('/leaders', leaderRouter);
+app.use('/imageUpload', uploadRouter);
 
 var listener = app.listen(3000, function () {
   console.log('Listening on port ' + listener.address().port)
