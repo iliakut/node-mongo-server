@@ -14,6 +14,7 @@ const dishRoutes = require('./routes/dishRoutes');
 const promoRouter = require('./routes/promoRouter');
 const leaderRouter = require('./routes/leaderRouter');
 const uploadRouter = require('./routes/uploadRouter');
+const favouriteRouter = require('./routes/favoriteRouter');
 
 const mongoose = require('mongoose');
 
@@ -54,6 +55,7 @@ app.use('/dishes', dishRoutes);
 app.use('/promotions', promoRouter);
 app.use('/leaders', leaderRouter);
 app.use('/imageUpload', uploadRouter);
+app.use('/favorites', favouriteRouter);
 
 var listener = app.listen(3000, function () {
   console.log('Listening on port ' + listener.address().port)
